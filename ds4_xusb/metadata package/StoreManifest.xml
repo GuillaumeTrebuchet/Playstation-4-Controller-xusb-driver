@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<StoreManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="StoreManifest.xsd" xmlns="http://schemas.microsoft.com/appx/2010/StoreManifest">
+  <ProductFeatures>
+    <DeviceCompanionApplication>
+      <ExperienceIds>
+        <ExperienceId>50b44bed-fcc7-4e13-aaa6-1d6f28b2406d</ExperienceId>
+      </ExperienceIds>
+    </DeviceCompanionApplication>
+  </ProductFeatures>
+</StoreManifest>

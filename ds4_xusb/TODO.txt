@@ -1,0 +1,4 @@
+When battery level reaches 0, the controller is disconnected.
+At that point if a request is issued, there is a deadlock.
+WdfDeviceInitRegisterPnpStateChangeCallback is not notified.
+Neither are Pnp callback or IoTarget callback.
