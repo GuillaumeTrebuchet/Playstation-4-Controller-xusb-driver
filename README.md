@@ -13,7 +13,8 @@ Maybe it was too complicated I don't know, but it was never really used in games
 Not like there is a lot of force feedback controllers for Windows anyway.
 
 Since the Xbox era, microsoft made the Xbox controller compatible with windows through a new library called XInput, making as a matter of fact DirectInput obsolete.<br/>
-This new library is now widely used, and is the only viable option for your device to be fully supported in game.
+XInput is much, much simpler and was made especially for Xbox controllers.
+This new library is now widely used, and most game only support gamepads via XInput.
 XInput as opposed to DirectInput speaks directly to the driver. And thus requires a custom device driver (where DirectInput only required a usermode component).
 
 The thing is, as opposed to DirectInput, where the API was (not that well, but still) documented, XInput driver interface is kept private.
