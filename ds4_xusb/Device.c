@@ -52,6 +52,12 @@ DEFINE_GUID(GUID_DEVCLASS_DS4_CONTROLLER,
 #include <ntstrsafe.h>
 
 
+VOID ds4_xusbIoTargetRemoveComplete(WDFIOTARGET IoTarget)
+{
+	//	Should maybe set the ioRemoteTarget to NULL as well...
+	WdfIoTargetClose(IoTarget);
+}
+
 NTSTATUS ds4_xusbOpenHidIoTarget(WDFDEVICE device)
 {
 	PDEVICE_CONTEXT deviceContext = DeviceGetContext(device);
@@ -93,6 +99,7 @@ NTSTATUS ds4_xusbOpenHidIoTarget(WDFDEVICE device)
 		FILE_READ_ACCESS | FILE_WRITE_ACCESS);
 
 	openParams.ShareAccess = FILE_SHARE_WRITE | FILE_SHARE_READ;
+	openParams.EvtIoTargetRemoveComplete = ds4_xusbIoTargetRemoveComplete;
 
 	status = WdfIoTargetOpen(deviceContext->remoteIOTarget, &openParams);
 	if (!NT_SUCCESS(status))
@@ -130,7 +137,7 @@ NTSTATUS ds4_xusbInitReportSize(WDFDEVICE device, PDEVICE_CONTEXT deviceContext,
 {
 	WDFMEMORY hMemory = NULL;
 	PHIDP_PREPARSED_DATA pPreparsedData = NULL;
-	HID_COLLECTION_INFORMATION collectionInfo;
+	HID_COLLECTION_INFORMATION collectionInfo = { 0 };
 	WDF_OBJECT_ATTRIBUTES memAttr;
 
 	WDF_MEMORY_DESCRIPTOR desc;
@@ -881,8 +888,11 @@ ds4_xusbCreateDevice(WDFDRIVER driver,
         }
 
 
+		//	IRRC I did that cause else the icon of the device
+		//	was incorrect, but create a bug, because... I dont know, maybe some duplicate infos
+		//	on the created device object. The message was A specific instance of a driver has enumerated multiple PDOs withidentical device id and unique ids
 		//	Initialize bus enumerator
-		PNP_BUS_INFORMATION busInfo;
+		/*PNP_BUS_INFORMATION busInfo;
 		busInfo.BusTypeGuid = GUID_DEVCLASS_DS4_CONTROLLER;
 		busInfo.LegacyBusType = PNPBus;
 		busInfo.BusNumber = 0;
@@ -897,7 +907,7 @@ ds4_xusbCreateDevice(WDFDRIVER driver,
 				"%!FUNC!, Bus_CreatePdo failed, %!STATUS!\n",
 				status);
 			return STATUS_UNSUCCESSFUL;
-		}
+		}*/
     }
 
     return status;
